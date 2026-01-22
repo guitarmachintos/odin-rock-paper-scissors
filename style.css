@@ -1,0 +1,64 @@
+:root {
+  --color1 : #4e1414;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.headerOuter,
+.mainOuter,
+.footerOuter {
+  display: flex;
+  justify-content: center;
+}
+
+.header,
+.main,
+.footer {
+  width: 1250px;
+}
+
+.headerOuter,
+.footerOuter {
+  flex-shrink: 0;
+
+  min-height: 75px;
+
+  background-color: var(--color1, aqua);
+  color: rgb(245, 245, 245);
+}
+
+.headerOuter {
+
+}
+
+.header {
+  
+}
+
+.mainOuter {
+  flex: 1;
+}
+
+.main {
+
+}
+
+.footerOuter {
+
+}
+
+.footer {
+
+}

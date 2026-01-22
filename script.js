@@ -123,4 +123,4 @@ function playGame() {
     }
 }
 
-playGame();
+// playGame();
