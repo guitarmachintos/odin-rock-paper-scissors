@@ -59,9 +59,9 @@ body {
   color: var(--white1, aqua)
 }
 
-.headerOuter {
+/* .headerOuter {
 
-}
+} */
 
 .header {
   display: flex;
@@ -95,14 +95,14 @@ body {
   flex: 1;
 }
 
-.main {
+/* .main {
 
-}
+} */
 
-.footerOuter {
+/* .footerOuter {
 
-}
+} */
 
-.footer {
+/* .footer {
 
-}
+} */
