@@ -1,12 +1,28 @@
 :root {
-  --color1 : #4e1414;
+  --color1: #4e1414;
+  --white1: rgb(245, 245, 245);
+  --black1: rgb(15, 15, 15);
+  --strengthColor: #ed3b37;
+  --magicColor: #812cbf;
+  --speedColor: #4e9de2;
 }
+
+.rubik-moonrocks-regular {
+  font-family: "Rubik Moonrocks", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 
 * {
   margin: 0;
   padding: 0;
   border: 0;
   box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
 }
 
 body {
@@ -40,7 +56,7 @@ body {
   align-items: center;
 
   background-color: var(--color1, aqua);
-  color: rgb(245, 245, 245);
+  color: var(--white1, aqua)
 }
 
 .headerOuter {
@@ -48,7 +64,31 @@ body {
 }
 
 .header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
 
+.titleContainer {
+  background-color: var(--white1, aqua);
+  border: 3px solid gray;
+  padding: 3px 10px;
+}
+
+.titleContainer span {
+  font-size: 30px;
+}
+
+.titleContainer span:nth-child(1) {
+  color: var(--strengthColor);
+}
+
+.titleContainer span:nth-child(2) {
+  color: var(--magicColor);
+}
+
+.titleContainer span:nth-child(3) {
+  color: var(--speedColor);
 }
 
 .mainOuter {
