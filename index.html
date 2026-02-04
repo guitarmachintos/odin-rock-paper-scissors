@@ -8,9 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Modak&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Rubik+Moonrocks&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=keyboard_return" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <link rel="stylesheet" href="style.css">
-  <script type="module" src="script.js"></script>
+  <!-- <script type="module" src="script.js"></script> -->
+  <script src="script.js" defer></script> 
 </head>
 <body>
   <div class="headerOuter">
@@ -29,7 +30,7 @@
     <div class="main">      
       <img src="img/smsGuide.png" alt="SMS Visual Guide" width="500">
       <div class="gameContainer">
-        <div class="mainMenu">
+        <div class="mainMenu flexDisplay">
           <h2>MAIN MENU</h2>
 
           <div class="roundNumberContainer">
@@ -37,15 +38,24 @@
             <input type="number" id="roundNumber" value="5" min="1">
           </div>
 
+          <p id="warningRoundText" style="display: none; color: red; font-size: 13px;">
+            ROUND NUMBER MUST BE WHOLE AND GREATER THAN 0!
+          </p>
+
           <div class="replayCheckerContainer">
-            <input type="checkbox" id="replayChecker">
-            <label for="replayChecker">Replay round on tie?</label>
+            <input type="checkbox" id="replayChecker" checked>
+            <label for="replayChecker" class="replayCheckerLabel">Replay round on tie 
+              <span class="material-symbols-outlined" style="font-size: large;"
+              title="Game may result on tie if unchecked">
+                info
+              </span>
+            </label>
           </div>       
         
           <button class="startButton modak-regular blink">START !</button>
         </div>
 
-        <div class="gameSession">
+        <div class="gameSession noneDisplay">
           <div class="backMenu">
             <span class="material-symbols-outlined">keyboard_return</span>
             <p>back to menu</p>
@@ -54,17 +64,21 @@
           <div class="roundCounterContainer">
             <span>Round-</span>
             <span id="roundCounter" class="blink">1</span>
+            <span style="margin-left: 3px;">of</span>
+            <span id="totalRound">5</span>
+            <span>&nbsp;</span>
+            <span id="isReplayedText">(with replay)</span>
           </div>
           <p class="chooseText">Choose your <span class="rubik-moonrocks-regular">ASPECT</span></p>
       
           <div class="aspectContainer">
-            <button class="rubik-moonrocks-regular"><span class="blink">STRENGTH</span></button>
-            <button class="rubik-moonrocks-regular"><span class="blink">MAGIC</span></button>
-            <button class="rubik-moonrocks-regular"><span class="blink">SPEED</span></button>
+            <button class="rubik-moonrocks-regular" id="strength"><span class="blink">STRENGTH</span></button>
+            <button class="rubik-moonrocks-regular" id="magic"><span class="blink">MAGIC</span></button>
+            <button class="rubik-moonrocks-regular" id="speed"><span class="blink"">SPEED</span></button>
           </div>
 
           <p class="matchLogText">match log:</p>
-          <div class="matchLog">
+          <div id="matchLog">
 
           </div>
 

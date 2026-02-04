@@ -1,63 +1,170 @@
+const startButton = document.querySelector('.startButton');
+const backMenuButton = document.querySelector('.backMenu');
+
+const mainMenu = document.querySelector('.mainMenu');
+const gameSession = document.querySelector('.gameSession');
+
+let numberOfRounds = 5;
+let isReplayed = true;
+
+let humanScore = 0;
+let computerScore = 0;
+let curRound = 1;
+
+const warningRoundText = document.querySelector('#warningRoundText');
+
+startButton.addEventListener('click', () => {
+    numberOfRounds = roundNumber.value;
+    if (+numberOfRounds <= 0 || (numberOfRounds % 1 !== 0)) {        
+        if (warningRoundText.style.display === 'none'){
+            warningRoundText.style.display = 'block'
+        }
+        else {
+            warningRoundText.classList.add('fastBlink');
+            setTimeout(() => {
+                warningRoundText.classList.remove('fastBlink');
+            }, 1000);
+        }
+        roundNumber.value = 5;
+    }
+    else {
+        numberOfRounds = +roundNumber.value;
+        isReplayed = replayChecker.checked;
+        resetGameState();
+        initializeGameState();
+        toggleGameContainer();
+    }
+
+});
+
+backMenuButton.addEventListener('click', () => {
+    resetMenuState();
+    toggleGameContainer();
+});
+
+function toggleGameContainer() {
+    if(mainMenu.classList.contains('flexDisplay')){
+        mainMenu.classList.replace('flexDisplay', 'noneDisplay');
+        gameSession.classList.replace('noneDisplay', 'flexDisplay');
+    }
+    else {
+        gameSession.classList.replace('flexDisplay', 'noneDisplay');
+        mainMenu.classList.replace('noneDisplay', 'flexDisplay');
+    }
+}
+
+const roundNumber = document.querySelector("#roundNumber");
+const replayChecker = document.querySelector('#replayChecker');
+
+const roundCounter = document.querySelector('#roundCounter');
+const totalRound = document.querySelector('#totalRound');
+const isReplayedText = document.querySelector('#isReplayedText');
+const matchLog = document.querySelector('#matchLog');
+const gameStatus = document.querySelector('#gameStatus');
+
+const aspectButtons = document.querySelectorAll('.aspectContainer span');
+
+function resetMenuState() {
+    warningRoundText.style.display = 'none';
+}
+
+function resetGameState() {
+    backMenuButton.classList.remove('blink');
+    roundCounter.textContent = 1;
+    roundCounter.classList.add('blink');
+    matchLog.textContent = '';
+    gameStatus.textContent = 'STILL PLAYING';
+    gameStatus.classList.add('blink');
+    gameStatus.style.removeProperty('color');
+    curRound = 1;
+    humanScore = 0;
+    computerScore = 0;
+    aspectButtons.forEach((e) => {
+        e.classList.add('blink');
+    })
+}
+
+function initializeGameState() {
+    totalRound.textContent = roundNumber.value;
+    isReplayedText.textContent = replayChecker.checked ? '(with replay)' : '(without replay)';
+}
+
 function getComputerChoice() {
-    // Get computer rock/paper/scissors choice
     let computerChoice = Math.floor(Math.random() * 3 + 1);
     switch (computerChoice) {
         case 1:
-            return "rock";
+            return "strength";
 
         case 2:
-            return "paper";
+            return "magic";
         
         case 3:
-            return "scissors";
+            return "speed";
+
         default:
             return "Computer choice error";
     }
 }
 
-// for (let i = 0; i < 100; i++) {
-//     console.log(getComputerChoice());       
-// }
+const aspectContainer = document.querySelector('.aspectContainer');
 
-function getHumanChoice() {
-    let humanChoice = prompt("Pick your hand (rock / paper / scissors)");
-    humanChoice = (humanChoice ?? '').toLowerCase();
-    while (true) {
-        if (humanChoice === 'rock' || humanChoice === 'paper'
-            || humanChoice === 'scissors') {
-            break;
-        }
-        humanChoice = prompt("Pick your hand (rock / paper / scissors)");
-        humanChoice = (humanChoice ?? '').toLowerCase();
-
+aspectContainer.addEventListener('click', (event) => {
+    if (event.target.classList.contains('aspectContainer')) {
+        return;
     }
-    return humanChoice;
-}
 
-// console.log(getHumanChoice());
+    if(curRound > numberOfRounds){
+        return;
+    }
+    
+    let humanChoice = event.target.tagName === 'SPAN' ? event.target.parentNode.id : event.target.id;
+
+    let computerChoice = getComputerChoice();
+
+    let result = playRound(humanChoice, computerChoice);
+    if (result === 'human') {
+        humanScore++;
+    }
+    else if (result === 'computer') {
+        computerScore++;
+    }
+
+    updateGameContent(result, isReplayed, curRound, humanChoice, computerChoice);
+    
+    if (!(result === 'draw' && isReplayed)){
+        curRound++;
+    }
+
+    if(curRound > numberOfRounds){
+        stopGame();
+        return;
+    }
+
+    roundCounter.textContent = curRound;
+});
 
 function playRound(humanChoice, computerChoice) {
     if (humanChoice === computerChoice){
         return 'draw';
     }
-    if(humanChoice === 'rock'){
-        if(computerChoice === 'paper'){
+    if(humanChoice === 'strength'){
+        if(computerChoice === 'magic'){
             return 'computer';
         }
         else{
             return 'human';
         }
     }
-    else if(humanChoice === 'paper'){
-        if(computerChoice === 'rock'){
+    else if(humanChoice === 'magic'){
+        if(computerChoice === 'strength'){
             return 'human';
         }
         else{
             return 'computer';
         }
     }
-    else if(humanChoice === 'scissors'){
-        if(computerChoice === 'rock'){
+    else if(humanChoice === 'speed'){
+        if(computerChoice === 'strength'){
             return 'computer';
         }
         else{
@@ -69,58 +176,60 @@ function playRound(humanChoice, computerChoice) {
     }
 }
 
-function getNumberOfRound() {
-    let numberOfRounds = +(prompt("Input number of rounds: "));
-    while (true) {
-        if (numberOfRounds >= 1 ) {
-            break;
-        }
-        numberOfRounds = +(prompt("Input number of rounds: "));
-    }
-    return numberOfRounds;
-}
-
-function playGame() {
-    let numberOfRounds = getNumberOfRound();
-    let humanScore = 0;
-    let computerScore = 0;
-    for (let i = 1; i <= numberOfRounds; i++) {
-        console.log(`Currently playing Round-${i}`);
-        
-        const humanChoice = getHumanChoice();
-        const computerChoice = getComputerChoice();
-
-        let result = playRound(humanChoice, computerChoice);
-
-        if(result === 'draw'){
-            console.log(`A DRAW! replaying Round-${i}`);
-            i--;
-            continue;
-        }
-        else if(result === 'human'){
-            humanScore++;
-            console.log(`Human wins, Human:${humanScore} Computer${computerScore}`);
-        }
-        else if(result === 'computer'){
-            computerScore++;
-            console.log(`Computer wins, Human:${humanScore} Computer${computerScore}`);
+function updateGameContent(result, isReplayed, curRound, humanChoice, computerChoice) {
+    const newLog = document.createElement('p');
+    if(result === 'draw'){
+        if(isReplayed){
+            newLog.textContent = `Round-${curRound} DRAW! (${humanChoice} vs ` 
+                                +`${computerChoice}). Replaying round-${curRound}.`;
         }
         else{
-            console.log("INVALID GAME!");
-            return;
-        }        
+            newLog.textContent = `Round-${curRound} DRAW! (${humanChoice} vs ` 
+                                +`${computerChoice}). Continuing to next round.`;
+        }
     }
-    console.log("GAME OVER!");
-    console.log(`Final Score - Human:${humanScore}, Computer: ${computerScore}`);
-    if(humanScore > computerScore){
-        console.log("Human won the game!");
+    else if(result === 'human'){
+        newLog.textContent = `Round-${curRound} WON! (${humanChoice} vs ` 
+                            +`${computerChoice}).`;
     }
-    else if (computerScore > humanScore){
-        console.log("Computer won the game!");        
+    else if(result === 'computer'){
+        newLog.textContent = `Round-${curRound} LOST! (${humanChoice} vs ` 
+                            +`${computerChoice}).`;
     }
     else{
-        console.log("A tie between Human and Computer!");
+        newLog.textContent = 'RESULT ERROR!';
     }
+    matchLog.appendChild(newLog);
+    matchLog.scrollTop = matchLog.scrollHeight;
 }
 
-// playGame();
+function stopGame() {    
+    roundCounter.classList.remove('blink');
+
+    aspectButtons.forEach((e) => {
+        e.classList.remove('blink');
+    })
+
+    if (humanScore > computerScore) {
+        gameStatus.textContent = `YOU WIN! ${humanScore} vs ${computerScore}`;
+        gameStatus.style.color = 'green';
+    }
+    else if (humanScore < computerScore) {
+        gameStatus.textContent = `YOU LOSE! ${humanScore} vs ${computerScore}`;
+        gameStatus.style.color = 'red';
+    }
+    else {
+        gameStatus.textContent = `TIE! ${humanScore} vs ${computerScore}`;
+        gameStatus.style.color = '#FF9800';
+    }
+
+    gameStatus.classList.remove('blink');
+
+    gameStatus.classList.add('fastBlink');
+    setTimeout(() => {
+        gameStatus.classList.remove('fastBlink');
+    }, 1000);
+
+    backMenuButton.classList.add('blink');
+
+}
